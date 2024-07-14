@@ -32,6 +32,9 @@ class TextFieldController extends GetxController{
     edPh=TextEditingController();
     edPassword=TextEditingController();
 
+    edEmail.text="Salim@gmail.com";
+    edPassword.text="Salim@123";
+
 
   }
 

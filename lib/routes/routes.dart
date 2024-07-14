@@ -8,12 +8,15 @@ import 'package:note_app_flutter/features/user/screens/page_home.dart';
 import 'package:note_app_flutter/features/user/screens/register.dart';
 import 'package:note_app_flutter/routes/routes_names.dart';
 
+import '../core/services/auth_middleware.dart';
+
 class AppRoutes{
   static appRoutes()=>[
     GetPage(
         name:RoutesNames.homePage,
         page:()=>HomePage(),
-        binding: HomeBinding()
+        binding: HomeBinding(),
+        middlewares:[AuthMiddleware()]
     ),
     GetPage(
         name: RoutesNames.loginPage,
@@ -33,6 +36,7 @@ class AppRoutes{
     GetPage(
         name:RoutesNames.noteHome,
         page:()=> NoteHome(),
+      binding: UserBinding()
     )
   ];
 }

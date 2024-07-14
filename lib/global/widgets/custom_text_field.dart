@@ -7,11 +7,12 @@ import '../../core/utils/constant.dart';
 class CustomTextField extends StatelessWidget{
   TextEditingController cont;
   String? text;
+  String? textVal;
   bool colorFocus;
   IconData? iconData;
   FocusNode focusNode;
 
-  CustomTextField({required this.cont,required this.text,required this.colorFocus,required this.iconData,required this.focusNode});
+  CustomTextField({required this.cont,required this.text,required this.colorFocus,required this.iconData,required this.focusNode,this.textVal});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,6 +21,7 @@ class CustomTextField extends StatelessWidget{
       child: TextFormField(
         controller: cont,
         focusNode: focusNode,
+
         decoration: InputDecoration(
             prefixIcon: Icon(iconData,color:colorFocus?Constants.colorBlue:Colors.black,),
             label:Text(text??"",style: TextStyle(color:colorFocus?Constants.colorBlue:Colors.black)),

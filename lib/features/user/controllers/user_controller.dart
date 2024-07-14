@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:note_app_flutter/data/models/user.dart';
 import 'package:note_app_flutter/data/repositories/user_repositorie.dart';
+import 'package:note_app_flutter/routes/routes_names.dart';
 
 class UserController extends GetxController {
   UserRepositorie userRepositorie = UserRepositorie();
@@ -9,7 +10,7 @@ class UserController extends GetxController {
   Future<void> login(String email, String password) async {
     final bool exist = await userRepositorie.login(email, password);
     if (exist) {
-      Get.toNamed("/noteHome");
+      Get.offAllNamed("/noteHome");
     } else {
       dialog("Error","email or password incorrect",(){
         Get.back();
@@ -28,6 +29,15 @@ class UserController extends GetxController {
       dialog("Error","account not create",(){
         Get.back();
       });
+    }
+  }
+
+  Future<void> logout()async{
+    final bool log=await userRepositorie.logout();
+    if(log){
+      userRepositorie.tokenManager.clearToken();
+      update();
+      Get.offAllNamed(RoutesNames.pageHome,arguments: 1);
     }
   }
 

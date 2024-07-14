@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:note_app_flutter/core/services/tokenManager.dart';
 import 'package:note_app_flutter/core/utils/constant.dart';
 class ApiServices{
+  TokenManager tokenManager=Get.find<TokenManager>();
   Future<http.Response> httpGet(String endPoint)async{
     final response=await http.get(
         Uri.parse("${Constants.link}/$endPoint"),
@@ -26,6 +29,11 @@ class ApiServices{
     final headers={
       "Content-Type":"application/json"
     };
+    if(tokenManager.isValidToken()){
+      print("yes");
+      String token=tokenManager.token!;
+      headers['Authorization']="Bearer $token";
+    }
     return headers;
   }
 }

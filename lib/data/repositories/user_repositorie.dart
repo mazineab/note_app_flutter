@@ -46,4 +46,14 @@ class UserRepositorie{
       return false;
     }
   }
+
+  Future<bool> logout()async{
+    final response=await apiService.httpPost("logout", {});
+    if(response.statusCode==200){
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
 }
