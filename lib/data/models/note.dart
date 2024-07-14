@@ -2,8 +2,9 @@ class Note{
   int? id,category_id;
   String? name,content;
   DateTime? createdAt,updatedAt;
+  String? nameCategory;
 
-  Note({this.id,this.category_id,this.name,this.content,this.createdAt,this.updatedAt});
+  Note({this.id,this.category_id,this.name,this.content,this.nameCategory,this.createdAt,this.updatedAt});
 
   factory Note.fromJson(Map<String,dynamic> map){
     return Note(
