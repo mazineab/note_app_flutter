@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:note_app_flutter/features/category/screens/app_home.dart';
 import 'package:note_app_flutter/features/home/bindings/home_binding.dart';
 import 'package:note_app_flutter/features/home/screens/home.dart';
 import 'package:note_app_flutter/features/note/NoteHome.dart';
@@ -37,6 +38,11 @@ class AppRoutes{
         name:RoutesNames.noteHome,
         page:()=> NoteHome(),
       binding: UserBinding()
+    ),
+    GetPage(
+        name:RoutesNames.appHome ,
+        page:()=> AppHome(),
+        binding: UserBinding()
     )
   ];
 }
