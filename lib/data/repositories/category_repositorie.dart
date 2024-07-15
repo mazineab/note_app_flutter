@@ -33,4 +33,16 @@ class CategoryRespositorie{
     }
     return listCategory;
   }
+  
+  Future<bool> addCategory(String categoryName) async {
+    var response=await apiServices.httpPost("createCategory", {
+      "nameCat":categoryName
+    });
+    if(response.statusCode==200){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 }

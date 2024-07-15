@@ -10,6 +10,6 @@ class Constants{
   static const Color colorGreyText=Color(0xFF9f9f9f);
   static const Color ColorGreyBack=Color(0xFFfafafa);
 
-  // static const String link="http://192.168.1.2:8000/api";
-  static const String link="http://192.168.11.116:8000/api";
+  static const String link="http://192.168.1.2:8000/api";
+  // static const String link="http://192.168.11.116:8000/api";
 }

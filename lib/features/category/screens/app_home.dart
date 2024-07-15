@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:note_app_flutter/core/utils/constant.dart';
@@ -15,8 +16,10 @@ class AppHome extends StatelessWidget {
   AppHome({super.key});
 
   UserController userController = Get.find<UserController>();
+  CategoryController categoryController=Get.put(CategoryController());
 
-  String selectedCategory = 'Home';
+  String selectedCategory = '';
+  TextEditingController contoldialog=TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +36,11 @@ class AppHome extends StatelessWidget {
         ],
       ),
       body: GetBuilder<CategoryController>(
-        init: CategoryController(),
+        // init: CategoryController(),
         builder: (controller){
           var categoris=controller.listCategory;
           List<Note> listFilter=controller.listNotes;
+          selectedCategory=controller.selectedCategory;
 
           return SizedBox(
             width: double.infinity,
@@ -80,7 +84,9 @@ class AppHome extends StatelessWidget {
                           return customeCardNote(
                               listFilter[index].name!,
                               listFilter[index].content!,
-                              listFilter[index].parseTime()
+                            listFilter[index].parseTime(),
+                              selectedCategory,
+
                           );
                         }
                     )
@@ -89,11 +95,93 @@ class AppHome extends StatelessWidget {
             ),
           );
         },
+      ),
 
+      floatingActionButtonLocation: ExpandableFab.location,
+      floatingActionButton: ExpandableFab(
+        openButtonBuilder: RotateFloatingActionButtonBuilder(
+          child: const Icon(Icons.add),
+          foregroundColor: Colors.white,
+          backgroundColor: Constants.colorBlue,
+        ),
+        closeButtonBuilder: RotateFloatingActionButtonBuilder(
+          child: const Icon(Icons.close),
+          foregroundColor: Colors.white,
+          backgroundColor: Constants.colorBlue,
+        ),
+
+        children: [
+          FloatingActionButton.small(
+            backgroundColor: Constants.colorBlue,
+            foregroundColor: Constants.colorwhite,
+            heroTag: null,
+            child: const Icon(Icons.note_add_outlined),
+            onPressed: () {
+
+            },
+          ),
+          FloatingActionButton.small(
+            heroTag: null,
+            backgroundColor: Constants.colorBlue,
+            foregroundColor: Constants.colorwhite,
+            child: const Icon(Icons.add_chart_outlined),
+            onPressed: () {
+              dialogCat(context);
+            },
+          ),
+        ],
       ),
     );
   }
-  Widget customeCardNote(String title,String content,parse){
+
+
+  Future dialogCat(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Create Category'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: contoldialog,
+                decoration: InputDecoration(
+                  label: Text("name category"),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Constants.colorBlue),
+                      borderRadius: BorderRadius.circular(10)
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10)
+                  )
+                ),
+              )
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                categoryController.createCategory(contoldialog.text);
+                Navigator.of(context).pop();
+              },
+              child: Text('Add'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+
+  Widget customeCardNote(String title,String content,parse,String category){
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20,vertical:10),
       decoration: BoxDecoration(

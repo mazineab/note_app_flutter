@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:note_app_flutter/data/models/category.dart';
 import 'package:note_app_flutter/data/models/note.dart';
@@ -21,6 +22,18 @@ class CategoryController extends GetxController{
     }
   }
 
+  Future<void> createCategory(String nameCategory)async{
+    final bool add=await categoryRespositorie.addCategory(nameCategory);
+    if(add){
+      alertCategory("info","Successfly add category",(){Get.back();});
+    }
+    else{
+      alertCategory("error","error in adding category",(){Get.back();});
+    }
+  }
+
+
+
   Future<void> getAllNotes(int id)async{
     final allNotes=await noteRespositorie.getNotesOf(id);
     if(allNotes!=null){
@@ -28,6 +41,8 @@ class CategoryController extends GetxController{
     }
     update();
   }
+
+  String selectedCategory="";
 
   void clickedCategory(int id){
     listNotes.clear();
@@ -39,11 +54,19 @@ class CategoryController extends GetxController{
   void onInit() async{
     super.onInit();
     await getAllCategory();
+    selectedCategory=listCategory[0].nameCat!;
     if(listCategory.isNotEmpty){
       clickedCategory(listCategory[0].id!);
     }
   }
+}
 
+void alertCategory(String title,content,tap){
+  Get.defaultDialog(
+    title: title,
+    content: Text(content),
+    cancel: TextButton(onPressed: (){tap;}, child:Text("Ok"))
+  );
 }
 
 

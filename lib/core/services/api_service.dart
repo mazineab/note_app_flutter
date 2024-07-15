@@ -30,7 +30,6 @@ class ApiServices{
       "Content-Type":"application/json"
     };
     if(tokenManager.isValidToken()){
-      print("yes");
       String token=tokenManager.token!;
       headers['Authorization']="Bearer $token";
     }
