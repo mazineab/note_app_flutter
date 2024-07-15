@@ -10,9 +10,10 @@ class CategoryRespositorie{
     final response=await apiServices.httpGet("getCategories");
     List<Category> listCategory=[];
     if(response.statusCode==200){
-      var data=jsonDecode(response.body);
-      listCategory.assignAll(
-        data
+      List<dynamic> data=jsonDecode(response.body);
+      print(data);
+      listCategory.addAll(
+        data.map((e) => Category.fromJson(e)).toList()
       );
     }
     return listCategory;

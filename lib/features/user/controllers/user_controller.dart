@@ -10,7 +10,7 @@ class UserController extends GetxController {
   Future<void> login(String email, String password) async {
     final bool exist = await userRepositorie.login(email, password);
     if (exist) {
-      Get.offAllNamed("/noteHome");
+      Get.offAllNamed(RoutesNames.appHome);
     } else {
       dialog("Error","email or password incorrect",(){
         Get.back();

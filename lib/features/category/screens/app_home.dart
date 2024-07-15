@@ -16,15 +16,6 @@ class AppHome extends StatelessWidget {
 
   UserController userController = Get.find<UserController>();
 
-  var categoris=[
-    Category(nameCategory: "Home"),
-    Category(nameCategory:"Work"),
-    Category(nameCategory: "ChatGpt"),
-    Category(nameCategory: "English"),
-    Category(nameCategory: "daily"),
-    Category(nameCategory: "Passwords"),
-    Category(nameCategory: "links"),
-  ];
 
   var listNotes=[
     Note(name: "Lyom",nameCategory: "Home",content: "Lyom ghnsaliw nch2lah"),
@@ -34,6 +25,8 @@ class AppHome extends StatelessWidget {
     Note(name: "gpt",nameCategory: "ChatGpt",content: "khsna gpt 4+"),
     Note(name: "fb",nameCategory: "Passwords",content: "Mazine@123"),
   ];
+
+  bool click=false;
 
   String selectedCategory = 'Home';
 
@@ -54,6 +47,7 @@ class AppHome extends StatelessWidget {
       body: GetBuilder<CategoryController>(
         init: CategoryController(),
         builder: (controller){
+          var categoris=controller.listCategory;
           List<Note> listFilter=listNotes.where((element) => element.nameCategory==selectedCategory).toList();
           return Container(
             width: double.infinity,
@@ -66,25 +60,28 @@ class AppHome extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       itemCount: categoris.length,
                       itemBuilder: (context,index){
+                        bool isSelected = selectedCategory == categoris[index].nameCat!;
                         return GestureDetector(
                             child: Container(
                               width: 80,
                               margin: const EdgeInsets.symmetric(horizontal: 10),
                               decoration: BoxDecoration(
-                                  color: Constants.colorBlue.withOpacity(0.7),
+                                  color: isSelected?Constants.colorBlue:Constants.colorBlue.withOpacity(0.7),
                                   borderRadius: BorderRadius.circular(15)
                               ),
                               child: Center(
-                                child: Text(categoris[index].nameCategory!,
+                                // child: Text(categoris[index].nameCategory!,
+                                child: Text(categoris[index].nameCat!,
                                     style: const TextStyle(fontWeight:FontWeight.bold,color:Colors.white)
                                     ,textAlign: TextAlign.center),
                               ),
                             ),
                             onTap:(){
                               print("OKK");
-                              selectedCategory=categoris[index].nameCategory!;
+                              selectedCategory=categoris[index].nameCat!;
+                              click=!click;
                               controller.update();
-                            }
+                            },
                         );
                       }
                   ),
