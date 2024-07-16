@@ -9,6 +9,7 @@ import 'package:note_app_flutter/core/utils/constant.dart';
 import 'package:note_app_flutter/data/models/category.dart';
 import 'package:note_app_flutter/data/models/note.dart';
 import 'package:note_app_flutter/features/category/controllers/category_controller.dart';
+import 'package:note_app_flutter/routes/routes_names.dart';
 import '../../user/controllers/user_controller.dart';
 
 
@@ -117,7 +118,7 @@ class AppHome extends StatelessWidget {
             heroTag: null,
             child: const Icon(Icons.note_add_outlined),
             onPressed: () {
-
+              Get.toNamed(RoutesNames.addNotePage);
             },
           ),
           FloatingActionButton.small(
@@ -126,7 +127,10 @@ class AppHome extends StatelessWidget {
             foregroundColor: Constants.colorwhite,
             child: const Icon(Icons.add_chart_outlined),
             onPressed: () {
-              dialogCat(context);
+              dialogCat(context,(){
+                categoryController.createCategory(contoldialog.text);
+                Navigator.of(context).pop();
+              });
             },
           ),
         ],
@@ -135,7 +139,7 @@ class AppHome extends StatelessWidget {
   }
 
 
-  Future dialogCat(BuildContext context) {
+  Future dialogCat(BuildContext context,onTap) {
     return showDialog(
       context: context,
       builder: (context) {
@@ -167,10 +171,7 @@ class AppHome extends StatelessWidget {
               child: const Text('Cancel'),
             ),
             TextButton(
-              onPressed: () {
-                categoryController.createCategory(contoldialog.text);
-                Navigator.of(context).pop();
-              },
+              onPressed:onTap,
               child: Text('Add'),
             ),
           ],

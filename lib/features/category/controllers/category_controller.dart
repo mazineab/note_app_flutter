@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:note_app_flutter/data/models/category.dart';
@@ -15,16 +17,26 @@ class CategoryController extends GetxController{
 
 
   Future<void> getAllCategory()async{
-    final allCategory=await categoryRespositorie.getCategory();
+    final allCategory=await categoryRespositorie.cashCategoryList();
     print(allCategory);
     if(allCategory!=null){
       listCategory.assignAll(allCategory);
     }
   }
 
+  Future<void> getCategoryOnline() async {
+    final allCategory=await categoryRespositorie.getCategory();
+    print(allCategory);
+    if(allCategory!=null){
+      listCategory.assignAll(allCategory);
+    }
+    update();
+  }
+
   Future<void> createCategory(String nameCategory)async{
     final bool add=await categoryRespositorie.addCategory(nameCategory);
     if(add){
+      getCategoryOnline();
       alertCategory("info","Successfly add category",(){Get.back();});
     }
     else{
@@ -35,8 +47,16 @@ class CategoryController extends GetxController{
 
 
   Future<void> getAllNotes(int id)async{
-    final allNotes=await noteRespositorie.getNotesOf(id);
+    final allNotes=await noteRespositorie.cashNoteList(id);
     if(allNotes!=null){
+      listNotes.assignAll(allNotes);
+    }
+    update();
+  }
+
+  Future<void> getNoteOnline(int id)async{
+    final allNotes=await noteRespositorie.getNotesOf(id);
+    if(allNotes.isNotEmpty){
       listNotes.assignAll(allNotes);
     }
     update();

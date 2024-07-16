@@ -12,14 +12,6 @@ class CategoryRespositorie{
 
   Future<List<Category>> getCategory()async{
     List<Category> listCategory=[];
-    List<Category> listCash=[];
-    String? cashData=sharedPrefManager.getString("dataCategory")??"";
-    if(cashData.isNotEmpty){
-      List<dynamic> cashCategory=jsonDecode(cashData);
-      listCash.addAll(cashCategory.map((e) => Category.fromJson(e)).toList());
-      return listCash;
-    }
-    else{
       final response=await apiServices.httpGet("getCategories");
       if(response.statusCode==200){
         List<dynamic> data=jsonDecode(response.body);
@@ -30,8 +22,20 @@ class CategoryRespositorie{
             data.map((e) => Category.fromJson(e)).toList()
         );
       }
-    }
     return listCategory;
+  }
+
+  Future<List<Category>> cashCategoryList()async{
+    List<Category> listCash=[];
+    String? cashData=sharedPrefManager.getString("dataCategory")??"";
+    if(cashData.isNotEmpty){
+      List<dynamic> cashCategory=jsonDecode(cashData);
+      listCash.addAll(cashCategory.map((e) => Category.fromJson(e)).toList());
+      return listCash;
+    }
+    else{
+      return await getCategory();
+    }
   }
   
   Future<bool> addCategory(String categoryName) async {
