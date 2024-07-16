@@ -22,6 +22,14 @@ class ApiServices{
     );
     return response;
   }
+  
+  Future<http.Response> httpDelete(String endPoint)async{
+    final response=await http.delete(
+      Uri.parse("${Constants.link}/$endPoint"),
+      headers: buildHeaders(),
+    );
+    return response;
+  }
 
 
 

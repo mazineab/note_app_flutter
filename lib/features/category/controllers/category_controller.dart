@@ -54,6 +54,18 @@ class CategoryController extends GetxController{
     update();
   }
 
+  Future<void> removeCategory(int id)async{
+    final bool removeCat=await categoryRespositorie.deleteCategory(id);
+    if(removeCat){
+      alertCategory("info","Succesfly delete category",(){Get.back();});
+      getCategoryOnline();
+    }
+    else{
+      alertCategory("error","error delete category",(){Get.back();});
+    }
+  }
+
+
   Future<void> getNoteOnline(int id)async{
     final allNotes=await noteRespositorie.getNotesOf(id);
     if(allNotes.isNotEmpty){
@@ -62,7 +74,16 @@ class CategoryController extends GetxController{
     update();
   }
 
-  String selectedCategory="";
+  Future<void> deleteNote(int id,int category_id)async{
+    final delete=await noteRespositorie.deleteNote(id);
+    if(delete){
+      alertCategory("info","Succesfly delete note",(){Get.back();});
+      getNoteOnline(category_id);
+    }
+    else{
+      alertCategory("error","error delete note",(){Get.back();});
+    }
+  }
 
   void clickedCategory(int id){
     listNotes.clear();
@@ -74,7 +95,6 @@ class CategoryController extends GetxController{
   void onInit() async{
     super.onInit();
     await getAllCategory();
-    selectedCategory=listCategory[0].nameCat!;
     if(listCategory.isNotEmpty){
       clickedCategory(listCategory[0].id!);
     }
@@ -85,14 +105,6 @@ void alertCategory(String title,content,tap){
   Get.defaultDialog(
     title: title,
     content: Text(content),
-    cancel: TextButton(onPressed: (){tap;}, child:Text("Ok"))
+    cancel: TextButton(onPressed:tap, child:Text("Ok"))
   );
 }
-
-
-// Note(name: "Lyom",nameCategory: "Home",content: "Lyom ghnsaliw nch2lah"),
-// Note(name: "ghda",nameCategory: "Home",content: "nfi9o m3a 8:00 nreglo mytkal"),
-// Note(name: "project Note",nameCategory: "Work",content: "had note app mzl fuha errors"),
-// Note(name: "writing",nameCategory: "English",content: "khsni nbda nregl writing bch ndevlope my english"),
-// Note(name: "gpt",nameCategory: "ChatGpt",content: "khsna gpt 4+"),
-// Note(name: "fb",nameCategory: "Passwords",content: "Mazine@123"),

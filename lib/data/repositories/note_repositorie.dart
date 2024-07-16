@@ -44,4 +44,13 @@ class NoteRespositorie extends GetxController {
       return false;
     }
   }
+
+  Future<bool> deleteNote(int id)async{
+    var response=await apiServices.httpDelete("note/$id");
+    if(response.statusCode==200){
+      return true;
+    }else{
+      return false;
+    }
+  }
 }

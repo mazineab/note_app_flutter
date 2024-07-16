@@ -49,4 +49,16 @@ class CategoryRespositorie{
       return false;
     }
   }
+
+  Future<bool> deleteCategory(int id)async{
+    var response=await apiServices.httpDelete("category/$id");
+    print(response.statusCode);
+    if(response.statusCode==200){
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
 }
