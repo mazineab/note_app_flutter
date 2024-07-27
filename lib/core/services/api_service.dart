@@ -22,6 +22,8 @@ class ApiServices{
     );
     return response;
   }
+
+
   
   Future<http.Response> httpDelete(String endPoint)async{
     final response=await http.delete(

@@ -7,12 +7,18 @@ import 'package:note_app_flutter/data/models/note.dart';
 import 'package:note_app_flutter/data/repositories/category_repositorie.dart';
 import 'package:note_app_flutter/data/repositories/note_repositorie.dart';
 
+
 class CategoryController extends GetxController{
   CategoryRespositorie categoryRespositorie  =CategoryRespositorie();
   NoteRespositorie noteRespositorie=NoteRespositorie();
   List<Category> listCategory=<Category>[].obs;
 
   List<Note> listNotes=<Note>[].obs;
+
+  var isLoading = false.obs;
+  var currentPage = 0;
+
+
 
 
 
@@ -44,6 +50,11 @@ class CategoryController extends GetxController{
     }
   }
 
+
+  Future<void> getAll(int id)async{
+    await getCategoryOnline();
+    await getNoteOnline(id);
+  }
 
 
   Future<void> getAllNotes(int id)async{

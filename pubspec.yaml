@@ -37,6 +37,8 @@ dependencies:
   custom_sliding_segmented_control: ^1.8.3
   intl: ^0.18.0
   flutter_expandable_fab: ^2.1.0
+  infinite_scroll_pagination: ^4.0.0
+  very_good_infinite_list: ^0.7.1
 
 
 

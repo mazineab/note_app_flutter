@@ -17,6 +17,12 @@ class AppHome extends StatelessWidget {
   String selectedCategory = "";
   TextEditingController contoldialog = TextEditingController();
 
+  Future<void> refresh()async{
+    int id=categoryController.listCategory.firstWhere((element) => element.nameCat==selectedCategory).id!;
+    await categoryController.getAll(id);
+    return Future.delayed(Duration(seconds:1));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,25 +41,26 @@ class AppHome extends StatelessWidget {
       ),
       body: GetBuilder<CategoryController>(
         builder: (controller) {
-          var categoris = controller.listCategory;
+      var categories = controller.listCategory;
           List<Note> listFilter = controller.listNotes;
           return SizedBox(
             width: double.infinity,
-            child: Column(
-              children: [
-                const SizedBox(height: 30),
-                SizedBox(
-                  height: 50,
-                  child: ListView.builder(
+            child: RefreshIndicator(
+              onRefresh:refresh,
+              child: Column(
+                children: [
+                  const SizedBox(height: 30),
+                  SizedBox(
+                    height: 50,
+                    child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: categoris.length,
+                      itemCount: categories.length,
                       itemBuilder: (context, index) {
-                        print(selectedCategory);
-                        if (selectedCategory.isEmpty) {
-                          selectedCategory = categoris[0].nameCat!;
+                        if (selectedCategory.isEmpty && categories.isNotEmpty) {
+                          selectedCategory = categories[0].nameCat!;
                         }
                         bool isSelected =
-                            selectedCategory == categoris[index].nameCat!;
+                            selectedCategory == categories[index].nameCat!;
                         return GestureDetector(
                           child: Container(
                             width: 80,
@@ -64,7 +71,7 @@ class AppHome extends StatelessWidget {
                                     : Constants.colorBlue.withOpacity(0.7),
                                 borderRadius: BorderRadius.circular(15)),
                             child: Center(
-                              child: Text(categoris[index].nameCat!,
+                              child: Text(categories[index].nameCat!,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white),
@@ -72,34 +79,34 @@ class AppHome extends StatelessWidget {
                             ),
                           ),
                           onTap: () {
-                            selectedCategory = categoris[index].nameCat!;
-                            controller.clickedCategory(categoris[index].id!);
+                            selectedCategory = categories[index].nameCat!;
+                            controller.clickedCategory(categories[index].id!);
                           },
                           onLongPress: () {
-                            dialogAsk(
-                                context, "do you want to remove this category",
-                                () {
-                              categoryController
-                                  .removeCategory(categoris[index].id!);
-                              Get.back();
-                            });
+                            dialogAsk(context,
+                                "Do you want to remove this category?", () {
+                                  categoryController.removeCategory(categories[index].id!);
+                                  Get.back();
+                                });
                           },
                         );
-                      }),
-                ),
-                const SizedBox(height: 20),
-                Expanded(
-                    child: ListView.builder(
-                        itemCount: listFilter.length,
-                        itemBuilder: (context, index) {
-                          return customeCardNote(
-                              listFilter[index].name!,
-                              listFilter[index].content!,
-                              listFilter[index].parseTime(),
-                              noteId: listFilter[index].id!,
-                              categoryId: listFilter[index].category_id!);
-                        }))
-              ],
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Expanded(
+                      child: ListView.builder(
+                          itemCount: listFilter.length,
+                          itemBuilder: (context, index) {
+                            return customeCardNote(
+                                listFilter[index].name!,
+                                listFilter[index].content!,
+                                listFilter[index].parseTime(),
+                                noteId: listFilter[index].id!,
+                                categoryId: listFilter[index].category_id!);
+                          }))
+                ],
+              ),
             ),
           );
         },
@@ -237,7 +244,7 @@ class AppHome extends StatelessWidget {
   Widget customeCardNote(String title, String content, parse,
       {required int noteId, required int categoryId}) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       decoration: BoxDecoration(
           color: Constants.colorGrey, borderRadius: BorderRadius.circular(15)),
       child: ListTile(
