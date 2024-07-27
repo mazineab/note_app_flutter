@@ -1,12 +1,11 @@
 import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:get/get.dart';
 import 'package:note_app_flutter/core/utils/constant.dart';
 import 'package:note_app_flutter/data/models/note.dart';
 import 'package:note_app_flutter/features/category/controllers/category_controller.dart';
+import 'package:note_app_flutter/global/widgets/custome_app_bar.dart';
 import 'package:note_app_flutter/routes/routes_names.dart';
 import '../../user/controllers/user_controller.dart';
 
@@ -28,19 +27,7 @@ class AppHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Constants.colorGrey,
-        title: const Text("Memo",
-            style: TextStyle(
-                color: Constants.colorBlue, fontWeight: FontWeight.bold)),
-        actions: [
-          IconButton(
-              onPressed: () {
-                userController.logout();
-              },
-              icon: const Icon(Icons.logout))
-        ],
-      ),
+      appBar: CustomeAppBar(),
       body: GetBuilder<CategoryController>(
         builder: (controller) {
       var categories = controller.listCategory;
@@ -51,7 +38,7 @@ class AppHome extends StatelessWidget {
               onRefresh:refresh,
               child: Column(
                 children: [
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 20),
                   SizedBox(
                     height: 50,
                     child: ListView.builder(
@@ -96,19 +83,41 @@ class AppHome extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Expanded(
-                      child: ListView.builder(
-                          itemCount: listFilter.length,
-                          itemBuilder: (context, index) {
-                            return customeCardNote(
-                                listFilter[index].name!,
-                                listFilter[index].content!,
-                                listFilter[index].parseTime(),
-                                noteId: listFilter[index].id!,
-                                categoryId: listFilter[index].category_id!,
-                                categoryController: controller
-                            );
-                          }))
+                  Obx((){
+                    if(controller.isloading.value) {
+                      return const Expanded(child: Center(child: CircularProgressIndicator()));
+                    }
+                    else if(controller.message.value.isNotEmpty){
+                      return Expanded(child: Center(child:Text(controller.message.value)));
+                    }
+                    else{
+                      return Expanded(
+                          child: ListView.builder(
+                              itemCount: listFilter.length,
+                              itemBuilder: (context, index) {
+                                return customeCardNote(
+                                    listFilter[index].name!,
+                                    listFilter[index].content!,
+                                    listFilter[index].parseTime(),
+                                    noteId: listFilter[index].id!,
+                                    categoryId: listFilter[index].category_id!,
+                                    categoryController: controller,
+                                    onTap:(){
+                                      // print("OKKKK");
+                                      Get.toNamed(RoutesNames.noteDetail,
+                                          arguments:{
+                                            "name":listFilter[index].name!,
+                                            "content":listFilter[index].content!,
+                                          }
+                                      );
+                                    }
+                                );
+                              }));
+                    }
+
+
+                  })
+
                 ],
               ),
             ),
@@ -245,95 +254,52 @@ class AppHome extends StatelessWidget {
         });
   }
   
-  // Future dialogEdit(context,name,content,id,categoryId,onTap,CategoryController controller){
-  //   controller.edTitle.value.text=name;
-  //   controller.edContent.value.text=content;
-  //   return showDialog(context: context, builder: (context)=>
-  //       AlertDialog(
-  //         title: Text("Edit Note"),
-  //         content: SingleChildScrollView(
-  //           child: Column(
-  //             children: [
-  //               TextField(
-  //                 controller: controller.edTitle.value,
-  //               ),
-  //               TextField(
-  //                 controller: controller.edContent.value,
-  //                 minLines: 1,
-  //                 maxLines: 10,
-  //               )
-  //             ],
-  //           ),
-  //         ),
-  //         actions: [
-  //           TextButton(
-  //               onPressed: (){
-  //                 print(controller.edContent.value.text);
-  //                 controller.editNote(id,"inst1",controller.edContent.value.text, categoryId);
-  //               },
-  //               child: const Text("Save")
-  //           ),
-  //           TextButton(
-  //               onPressed: (){
-  //                 Get.back();
-  //               },
-  //               child: const Text("Cancel")
-  //           )
-  //         ],
-  //       )
-  //   );
-  // }
-
-  Future<void> dialogEdit(context, String name, String content, int id, int categoryId, CategoryController controller) async {
-    controller.edTitle.value.text = name;
-    controller.edContent.value.text = content;
-    return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text("Edit Note"),
-        content: SingleChildScrollView(
-          child: Column(
-            children: [
-              Obx(() => TextField(
-                controller: controller.edTitle.value,
-                decoration: InputDecoration(labelText: "Title"),
-              )),
-              Obx(() => TextField(
-                controller: controller.edContent.value,
-                decoration: InputDecoration(labelText: "Content"),
-                minLines: 1,
-                maxLines: 10,
-              )),
-            ],
+  Future dialogEdit(context,name,content,id,categoryId,CategoryController controller){
+    controller.edTitle.value.text=name;
+    controller.edContent.value.text=content;
+    return showDialog(context: context, builder: (context)=>
+        AlertDialog(
+          title: const Text("Edit Note"),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextField(
+                  controller: controller.edTitle.value,
+                ),
+                TextField(
+                  controller: controller.edContent.value,
+                  minLines: 1,
+                  maxLines: 10,
+                )
+              ],
+            ),
           ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              controller.editNote(id, controller.edTitle.value.text, controller.edContent.value.text, categoryId);
-              Get.back();
-            },
-            child: const Text("Save"),
-          ),
-          TextButton(
-            onPressed: () {
-              Get.back();
-            },
-            child: const Text("Cancel"),
-          ),
-        ],
-      ),
+          actions: [
+            TextButton(
+                onPressed: (){
+                  controller.editNote(id,controller.edTitle.value.text,controller.edContent.value.text, categoryId);
+                },
+                child: const Text("Save")
+            ),
+            TextButton(
+                onPressed: (){
+                  Get.back();
+                },
+                child: const Text("Cancel")
+            )
+          ],
+        )
     );
   }
 
-
   Widget customeCardNote(String title, String content, parse,
-      {required int noteId, required int categoryId,required CategoryController categoryController}) {
+      {required int noteId, required int categoryId,required CategoryController categoryController,required onTap}) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       decoration: BoxDecoration(
           color: Constants.colorGrey, borderRadius: BorderRadius.circular(15)),
       child: ListTile(
+        onTap: onTap,
         trailing: PopupMenuButton(
           iconColor: Constants.colorBlue,
           color: Constants.colorBlue.withOpacity(0.5),
@@ -351,7 +317,7 @@ class AppHome extends StatelessWidget {
           },
           onSelected: (value) {
             if (value == "Edit") {
-              dialogEdit(Get.context, title, content,noteId,categoryId, categoryController);
+              dialogEdit(Get.context, title, content,noteId,categoryId,categoryController);
             }
             if (value == "Remove") {
               dialogAsk(Get.context,"do you want to remove this note",(){

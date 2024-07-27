@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,8 +16,10 @@ class CategoryController extends GetxController{
 
   List<Note> listNotes=<Note>[].obs;
 
-  var isLoading = false.obs;
+  var isloading = true.obs;
+  var message="".obs;
   var currentPage = 0;
+
 
 
 
@@ -58,11 +61,21 @@ class CategoryController extends GetxController{
 
 
   Future<void> getAllNotes(int id)async{
-    final allNotes=await noteRespositorie.cashNoteList(id);
-    if(allNotes!=null){
-      listNotes.assignAll(allNotes);
-    }
-    update();
+      isloading.value = true;
+      try {
+        List<Note> allNotes = await noteRespositorie.cashNoteList(id);
+        if (allNotes.isNotEmpty) {
+          listNotes.assignAll(allNotes);
+          message.value = "";
+        } else {
+          message.value = "This category is empty. Create one note.";
+        }
+      } catch (e) {
+        message.value = "An error occurred while fetching notes.";
+      } finally {
+        isloading.value = false;
+        update();
+      }
   }
 
   Future<void> removeCategory(int id)async{
@@ -78,10 +91,18 @@ class CategoryController extends GetxController{
 
 
   Future<void> getNoteOnline(int id)async{
-    final allNotes=await noteRespositorie.getNotesOf(id);
-    if(allNotes.isNotEmpty){
-      listNotes.assignAll(allNotes);
+    try{
+      final allNotes=await noteRespositorie.getNotesOf(id);
+      if(allNotes.isNotEmpty){
+        listNotes.assignAll(allNotes);
+      }
+      else{
+        message.value="this category is empty create one note";
+      }
+    }catch(e){
+      message.value="Error ocurent charging notes of this category";
     }
+    isloading.value=false;
     update();
   }
 

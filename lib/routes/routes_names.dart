@@ -6,4 +6,5 @@ class RoutesNames{
   static const String noteHome="/noteHome";
   static const String appHome="/appHome";
   static const String addNotePage="/addNotePage";
+  static const String noteDetail="/note_detail";
 }

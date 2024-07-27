@@ -24,14 +24,24 @@ class NoteRespositorie extends GetxController {
   }
 
   Future<List<Note>> cashNoteList(int id) async {
-    List<Note> listCashe = [];
-    String? cashData = sharedPrefManager.getString("Note$id") ?? "";
-    if (cashData.isNotEmpty) {
-      List<dynamic> cashNote = jsonDecode(cashData);
-      listCashe.addAll(cashNote.map((e) => Note.fromJson(e)).toList());
-      return listCashe;
-    } else {
-      return await getNotesOf(id);
+    try {
+      List<Note> listCashe = [];
+      String? cashData = sharedPrefManager.getString("Note$id") ?? "";
+
+      if (cashData.isNotEmpty) {
+        List<dynamic> cashNote = jsonDecode(cashData);
+        listCashe.addAll(cashNote.map((e) => Note.fromJson(e)).toList());
+        return listCashe;
+      } else {
+        return await getNotesOf(id).timeout(
+          const Duration(seconds: 3),
+          onTimeout: () {
+            throw Exception("Request timed out");
+          },
+        );
+      }
+    } catch (e) {
+      throw Exception("Failed to load cached notes");
     }
   }
 

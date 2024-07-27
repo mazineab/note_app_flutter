@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:note_app_flutter/features/category/screens/add_note_page.dart';
 import 'package:note_app_flutter/features/category/screens/app_home.dart';
+import 'package:note_app_flutter/features/category/screens/note_details.dart';
 import 'package:note_app_flutter/features/home/bindings/home_binding.dart';
 import 'package:note_app_flutter/features/home/screens/home.dart';
 import 'package:note_app_flutter/features/note/NoteHome.dart';
@@ -45,5 +46,10 @@ class AppRoutes{
         page:()=> AddNotePage(),
         binding: UserBinding()
     ),
+    GetPage(
+        name: RoutesNames.noteDetail,
+        page: ()=>const NoteDetails(),
+      binding: UserBinding()
+    )
   ];
 }

@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:note_app_flutter/features/category/controllers/add_note_controller.dart';
 import 'package:note_app_flutter/features/category/controllers/category_controller.dart';
 import 'package:note_app_flutter/global/widgets/custom_button.dart';
+import 'package:note_app_flutter/global/widgets/custome_app_bar.dart';
 
 import '../../../core/utils/constant.dart';
 import '../../user/controllers/user_controller.dart';
@@ -12,7 +13,7 @@ import '../../user/controllers/user_controller.dart';
 class AddNotePage extends StatelessWidget {
    AddNotePage({super.key});
 
-  UserController userController = Get.find<UserController>();
+
   CategoryController categoryController=Get.put(CategoryController());
   AddNoteController addNoteController=Get.put(AddNoteController());
 
@@ -25,17 +26,7 @@ class AddNotePage extends StatelessWidget {
     var lisCategory=categoryController.listCategory;
     return Scaffold(
       // resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Constants.colorGrey,
-        title: const Text("Memo", style: TextStyle(color:Constants.colorBlue,fontWeight: FontWeight.bold)),
-        actions: [
-          IconButton(
-              onPressed: () {
-                userController.logout();
-              },
-              icon: const Icon(Icons.logout))
-        ],
-      ),
+      appBar: CustomeAppBar(),
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 30),
