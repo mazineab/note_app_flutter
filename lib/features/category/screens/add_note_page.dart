@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:note_app_flutter/features/category/controllers/add_note_controller.dart';
 import 'package:note_app_flutter/features/category/controllers/category_controller.dart';
 import 'package:note_app_flutter/global/widgets/custom_button.dart';
@@ -25,7 +24,6 @@ class AddNotePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var lisCategory=categoryController.listCategory;
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       appBar: CustomeAppBar(),
       body: SingleChildScrollView(
         child: Container(
@@ -84,11 +82,9 @@ class AddNotePage extends StatelessWidget {
                       textContent.text,
                       id
                   );
-                categoryController.getNoteOnline(id);
+                  categoryController.gitAfterAdd(id);
                 },
               )
-
-
             ],
           ),
         ),

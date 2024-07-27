@@ -12,7 +12,10 @@ class PageHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int val=Get.arguments;
+    // int val=Get.arguments;
+    Map<String,dynamic>data=Get.arguments;
+    int val=data['index'];
+    bool isFirst=data['first'];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Constants.colorGrey,
@@ -28,7 +31,7 @@ class PageHome extends StatelessWidget {
           child: GetBuilder<TextFieldController>(
             builder: (controller) {
               if(val!=-1){
-                controller.chnagePage(val);
+                controller.chnagePage(val,isFirst);
               }
               return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -46,7 +49,7 @@ class PageHome extends StatelessWidget {
                       children: const {1: Text("Login"), 2: Text("register")},
                       onValueChanged: (value) {
                         val=-1;
-                        controller.chnagePage(value);
+                        controller.chnagePage(value,false);
                       },
                       decoration: BoxDecoration(
                           color: Constants.colorGrey,

@@ -78,14 +78,17 @@ class TextFieldController extends GetxController{
   }
 
   bool login=true;
-  void chnagePage(int value){
+  void chnagePage(int value,bool isFirst){
     if(value==2){
       login=false;
     }
-    else{
+    else if(value==1){
       login=true;
     }
-    clearFocus();
+    if(!isFirst){
+      clearFocus();
+    }
+
     update();
   }
 

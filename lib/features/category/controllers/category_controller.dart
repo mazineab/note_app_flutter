@@ -144,6 +144,12 @@ class CategoryController extends GetxController{
     update();
   }
 
+  void gitAfterAdd(int id){
+    listNotes.clear();
+    getNoteOnline(id);
+    update();
+  }
+
   @override
   void onInit() async{
     super.onInit();

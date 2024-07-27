@@ -5,9 +5,9 @@ class HomeController extends GetxController{
 
 
   toRegister(){
-    Get.toNamed(RoutesNames.pageHome,arguments: 1);
+    Get.toNamed(RoutesNames.pageHome,arguments:{"index":1,"first":true});
   }
   toLogin(){
-    Get.toNamed(RoutesNames.pageHome,arguments: 2);
+    Get.toNamed(RoutesNames.pageHome,arguments: {"index":1,"first":true});
   }
 }

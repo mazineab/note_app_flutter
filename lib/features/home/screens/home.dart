@@ -32,7 +32,7 @@ class HomePage extends StatelessWidget {
                   return CustomButton(
                       text: "register",colorText: Constants.colorwhite,colorBg: Constants.colorBlue,
                     onPressed:(){
-                      controller.toLogin();
+                      controller.toRegister();
                     },
                   );
                 }
@@ -42,7 +42,7 @@ class HomePage extends StatelessWidget {
                 builder:(controller){
                   return CustomButton(text: "Login",colorText: Constants.colorBlue,colorBg: Constants.colorwhite,
                     onPressed:(){
-                      controller.toRegister();
+                      controller.toLogin();
                     },
                   );
                 }
