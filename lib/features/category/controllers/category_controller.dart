@@ -96,6 +96,27 @@ class CategoryController extends GetxController{
     }
   }
 
+  var edTitle=TextEditingController().obs;
+  var edContent=TextEditingController().obs;
+  Future<void> editNote(int id,String name,String content,int category_id)async{
+    final edit=await noteRespositorie.editNote(
+        {
+          "id":id,
+          "name":name,
+          "content":content,
+        }
+    );
+    if(edit){
+      alertCategory("info","Succesfly editing note",(){Get.back();});
+      await getNoteOnline(category_id);
+    }
+    else{
+      alertCategory("error","error editing note",(){Get.back();});
+    }
+  }
+
+
+
   void clickedCategory(int id){
     listNotes.clear();
     getAllNotes(id);

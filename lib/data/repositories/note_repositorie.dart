@@ -53,4 +53,14 @@ class NoteRespositorie extends GetxController {
       return false;
     }
   }
+  
+  Future<bool> editNote(Map<String,dynamic> body)async{
+    var response=await apiServices.httpPut("editNote",body);
+    if(response.statusCode==200){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 }

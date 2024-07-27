@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
@@ -103,7 +105,9 @@ class AppHome extends StatelessWidget {
                                 listFilter[index].content!,
                                 listFilter[index].parseTime(),
                                 noteId: listFilter[index].id!,
-                                categoryId: listFilter[index].category_id!);
+                                categoryId: listFilter[index].category_id!,
+                                categoryController: controller
+                            );
                           }))
                 ],
               ),
@@ -240,9 +244,91 @@ class AppHome extends StatelessWidget {
           );
         });
   }
+  
+  // Future dialogEdit(context,name,content,id,categoryId,onTap,CategoryController controller){
+  //   controller.edTitle.value.text=name;
+  //   controller.edContent.value.text=content;
+  //   return showDialog(context: context, builder: (context)=>
+  //       AlertDialog(
+  //         title: Text("Edit Note"),
+  //         content: SingleChildScrollView(
+  //           child: Column(
+  //             children: [
+  //               TextField(
+  //                 controller: controller.edTitle.value,
+  //               ),
+  //               TextField(
+  //                 controller: controller.edContent.value,
+  //                 minLines: 1,
+  //                 maxLines: 10,
+  //               )
+  //             ],
+  //           ),
+  //         ),
+  //         actions: [
+  //           TextButton(
+  //               onPressed: (){
+  //                 print(controller.edContent.value.text);
+  //                 controller.editNote(id,"inst1",controller.edContent.value.text, categoryId);
+  //               },
+  //               child: const Text("Save")
+  //           ),
+  //           TextButton(
+  //               onPressed: (){
+  //                 Get.back();
+  //               },
+  //               child: const Text("Cancel")
+  //           )
+  //         ],
+  //       )
+  //   );
+  // }
+
+  Future<void> dialogEdit(context, String name, String content, int id, int categoryId, CategoryController controller) async {
+    controller.edTitle.value.text = name;
+    controller.edContent.value.text = content;
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Edit Note"),
+        content: SingleChildScrollView(
+          child: Column(
+            children: [
+              Obx(() => TextField(
+                controller: controller.edTitle.value,
+                decoration: InputDecoration(labelText: "Title"),
+              )),
+              Obx(() => TextField(
+                controller: controller.edContent.value,
+                decoration: InputDecoration(labelText: "Content"),
+                minLines: 1,
+                maxLines: 10,
+              )),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              controller.editNote(id, controller.edTitle.value.text, controller.edContent.value.text, categoryId);
+              Get.back();
+            },
+            child: const Text("Save"),
+          ),
+          TextButton(
+            onPressed: () {
+              Get.back();
+            },
+            child: const Text("Cancel"),
+          ),
+        ],
+      ),
+    );
+  }
+
 
   Widget customeCardNote(String title, String content, parse,
-      {required int noteId, required int categoryId}) {
+      {required int noteId, required int categoryId,required CategoryController categoryController}) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       decoration: BoxDecoration(
@@ -265,7 +351,7 @@ class AppHome extends StatelessWidget {
           },
           onSelected: (value) {
             if (value == "Edit") {
-              print("OKK Edit");
+              dialogEdit(Get.context, title, content,noteId,categoryId, categoryController);
             }
             if (value == "Remove") {
               dialogAsk(Get.context,"do you want to remove this note",(){

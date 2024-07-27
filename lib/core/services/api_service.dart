@@ -23,7 +23,14 @@ class ApiServices{
     return response;
   }
 
-
+  Future<http.Response> httpPut(String endPoint,body)async{
+    final response=await http.put(
+        Uri.parse("${Constants.link}/$endPoint"),
+        headers: buildHeaders(),
+        body:jsonEncode(body)
+    );
+    return response;
+  }
   
   Future<http.Response> httpDelete(String endPoint)async{
     final response=await http.delete(
