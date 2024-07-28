@@ -37,8 +37,6 @@ class UserRepositorie{
         'password':user.password
       }
     );
-    print(user.toJson());
-    print(response.statusCode);
     if(response.statusCode==201){
       return true;
     }

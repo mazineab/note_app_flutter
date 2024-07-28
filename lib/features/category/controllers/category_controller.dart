@@ -3,6 +3,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:note_app_flutter/core/utils/localStorage/shared_pref_manager.dart';
 import 'package:note_app_flutter/data/models/category.dart';
 import 'package:note_app_flutter/data/models/note.dart';
 import 'package:note_app_flutter/data/repositories/category_repositorie.dart';
@@ -13,12 +14,10 @@ class CategoryController extends GetxController{
   CategoryRespositorie categoryRespositorie  =CategoryRespositorie();
   NoteRespositorie noteRespositorie=NoteRespositorie();
   List<Category> listCategory=<Category>[].obs;
-
   List<Note> listNotes=<Note>[].obs;
 
   var isloading = true.obs;
   var message="".obs;
-  var currentPage = 0;
 
 
 
@@ -51,6 +50,7 @@ class CategoryController extends GetxController{
     else{
       alertCategory("error","error in adding category",(){Get.back();});
     }
+    update();
   }
 
 
@@ -82,7 +82,11 @@ class CategoryController extends GetxController{
     final bool removeCat=await categoryRespositorie.deleteCategory(id);
     if(removeCat){
       alertCategory("info","Succesfly delete category",(){Get.back();});
-      getCategoryOnline();
+      await getCategoryOnline();
+      await getNoteOnline(id);
+      if(listCategory.isEmpty){
+        messageEmptyCategory.value="Start to create category and note by click in button +";
+      }
     }
     else{
       alertCategory("error","error delete category",(){Get.back();});
@@ -111,10 +115,14 @@ class CategoryController extends GetxController{
     if(delete){
       alertCategory("info","Succesfly delete note",(){Get.back();});
       getNoteOnline(category_id);
+      if(listCategory.isEmpty){
+        messageEmptyCategory.value="Start to create category and note by click in button +";
+      }
     }
     else{
       alertCategory("error","error delete note",(){Get.back();});
     }
+    update();
   }
 
   var edTitle=TextEditingController().obs;
@@ -138,9 +146,13 @@ class CategoryController extends GetxController{
 
 
 
+  var messageEmptyCategory="".obs;
   void clickedCategory(int id){
     listNotes.clear();
-    getAllNotes(id);
+    if(listCategory.isNotEmpty){
+      print("isNotEmpty");
+      getAllNotes(id);
+    }
     update();
   }
 
@@ -156,6 +168,8 @@ class CategoryController extends GetxController{
     await getAllCategory();
     if(listCategory.isNotEmpty){
       clickedCategory(listCategory[0].id!);
+    }else{
+      messageEmptyCategory.value="Start to create category and note by click in button +";
     }
   }
 }

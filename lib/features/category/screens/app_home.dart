@@ -32,96 +32,102 @@ class AppHome extends StatelessWidget {
         builder: (controller) {
       var categories = controller.listCategory;
           List<Note> listFilter = controller.listNotes;
-          return SizedBox(
-            width: double.infinity,
-            child: RefreshIndicator(
-              onRefresh:refresh,
-              child: Column(
-                children: [
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    height: 50,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: categories.length,
-                      itemBuilder: (context, index) {
-                        if (selectedCategory.isEmpty && categories.isNotEmpty) {
-                          selectedCategory = categories[0].nameCat!;
-                        }
-                        bool isSelected =
-                            selectedCategory == categories[index].nameCat!;
-                        return GestureDetector(
-                          child: Container(
-                            width: 80,
-                            margin: const EdgeInsets.symmetric(horizontal: 10),
-                            decoration: BoxDecoration(
-                                color: isSelected
-                                    ? Constants.colorBlue
-                                    : Constants.colorBlue.withOpacity(0.7),
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Center(
-                              child: Text(categories[index].nameCat!,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                  textAlign: TextAlign.center),
+          if(controller.messageEmptyCategory.value.isNotEmpty){
+            return Center(child: Text(controller.messageEmptyCategory.value));
+          }
+          else{
+            return SizedBox(
+              width: double.infinity,
+              child: RefreshIndicator(
+                onRefresh:refresh,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 50,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: categories.length,
+                        itemBuilder: (context, index) {
+                          if (selectedCategory.isEmpty && categories.isNotEmpty) {
+                            selectedCategory = categories[0].nameCat!;
+                          }
+                          bool isSelected =
+                              selectedCategory == categories[index].nameCat!;
+                          return GestureDetector(
+                            child: Container(
+                              width: 80,
+                              margin: const EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                  color: isSelected
+                                      ? Constants.colorBlue
+                                      : Constants.colorBlue.withOpacity(0.7),
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Center(
+                                child: Text(categories[index].nameCat!,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                    textAlign: TextAlign.center),
+                              ),
                             ),
-                          ),
-                          onTap: () {
-                            selectedCategory = categories[index].nameCat!;
-                            controller.clickedCategory(categories[index].id!);
-                          },
-                          onLongPress: () {
-                            dialogAsk(context,
-                                "Do you want to remove this category?", () {
-                                  categoryController.removeCategory(categories[index].id!);
-                                  Get.back();
-                                });
-                          },
-                        );
-                      },
+                            onTap: () {
+                              selectedCategory = categories[index].nameCat!;
+                              controller.clickedCategory(categories[index].id!);
+                            },
+                            onLongPress: () {
+                              dialogAsk(context,
+                                  "Do you want to remove this category?", () {
+                                    categoryController.removeCategory(categories[index].id!);
+                                    Get.back();
+                                  });
+                            },
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Obx((){
-                    if(controller.isloading.value) {
-                      return const Expanded(child: Center(child: CircularProgressIndicator()));
-                    }
-                    else if(controller.message.value.isNotEmpty){
-                      return Expanded(child: Center(child:Text(controller.message.value)));
-                    }
-                    else{
-                      return Expanded(
-                          child: ListView.builder(
-                              itemCount: listFilter.length,
-                              itemBuilder: (context, index) {
-                                return customeCardNote(
-                                    listFilter[index].name!,
-                                    listFilter[index].content!,
-                                    listFilter[index].parseTime(),
-                                    noteId: listFilter[index].id!,
-                                    categoryId: listFilter[index].category_id!,
-                                    categoryController: controller,
-                                    onTap:(){
-                                      // print("OKKKK");
-                                      Get.toNamed(RoutesNames.noteDetail,
-                                          arguments:{
-                                            "name":listFilter[index].name!,
-                                            "content":listFilter[index].content!,
-                                          }
-                                      );
-                                    }
-                                );
-                              }));
-                    }
+                    const SizedBox(height: 10),
+                    Obx((){
+                      if(controller.isloading.value) {
+                        return const Expanded(child: Center(child: CircularProgressIndicator()));
+                      }
+                      else if(controller.message.value.isNotEmpty){
+                        return Expanded(child: Center(child:Text(controller.message.value)));
+                      }
+                      else{
+                        return Expanded(
+                            child: ListView.builder(
+                                itemCount: listFilter.length,
+                                itemBuilder: (context, index) {
+                                  return customeCardNote(
+                                      listFilter[index].name!,
+                                      listFilter[index].content!,
+                                      listFilter[index].parseTime(),
+                                      noteId: listFilter[index].id!,
+                                      categoryId: listFilter[index].category_id!,
+                                      categoryController: controller,
+                                      onTap:(){
+                                        // print("OKKKK");
+                                        Get.toNamed(RoutesNames.noteDetail,
+                                            arguments:{
+                                              "name":listFilter[index].name!,
+                                              "content":listFilter[index].content!,
+                                            }
+                                        );
+                                      }
+                                  );
+                                }));
+                      }
 
 
-                  })
+                    })
 
-                ],
+                  ],
+                ),
               ),
-            ),
-          );
+            );
+          }
+
         },
       ),
       floatingActionButtonLocation: ExpandableFab.location,

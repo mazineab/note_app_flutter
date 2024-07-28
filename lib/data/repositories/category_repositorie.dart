@@ -15,9 +15,7 @@ class CategoryRespositorie{
       final response=await apiServices.httpGet("getCategories");
       if(response.statusCode==200){
         List<dynamic> data=jsonDecode(response.body);
-        if(data.isNotEmpty){
-          sharedPrefManager.saveString("dataCategory",jsonEncode(data));
-        }
+        sharedPrefManager.saveString("dataCategory",jsonEncode(data));
         listCategory.addAll(
             data.map((e) => Category.fromJson(e)).toList()
         );

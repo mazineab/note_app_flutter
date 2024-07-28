@@ -30,4 +30,26 @@ class SharedPrefManager extends GetxService{
       return false;
     }
   }
+
+  // Future<bool> clear()async{
+  //   try{
+  //     return await pref.clear();
+  //   }catch(e){
+  //     return false;
+  //   }
+  // }
+  Future<bool> clear() async {
+    try {
+      bool result = await pref.clear();
+      if (result) {
+        print("SharedPreferences cleared successfully.");
+      } else {
+        print("Failed to clear SharedPreferences.");
+      }
+      return result;
+    } catch (e) {
+      print("Error clearing SharedPreferences: $e");
+      return false;
+    }
+  }
 }

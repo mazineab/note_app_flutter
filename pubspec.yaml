@@ -39,6 +39,7 @@ dependencies:
   flutter_expandable_fab: ^2.1.0
   infinite_scroll_pagination: ^4.0.0
   very_good_infinite_list: ^0.7.1
+  flutter_native_splash: ^2.2.4
 
 
 
@@ -72,6 +73,10 @@ flutter:
   assets:
      - assets/images/
   #   - images/a_dot_ham.jpeg
+flutter_native_splash:
+  android: true
+  color: "#42a5f5"
+  image: "assets/images/note.png"
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

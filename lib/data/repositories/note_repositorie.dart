@@ -31,6 +31,7 @@ class NoteRespositorie extends GetxController {
       if (cashData.isNotEmpty) {
         List<dynamic> cashNote = jsonDecode(cashData);
         listCashe.addAll(cashNote.map((e) => Note.fromJson(e)).toList());
+        print(sharedPrefManager.pref.get("token"));
         return listCashe;
       } else {
         return await getNotesOf(id).timeout(

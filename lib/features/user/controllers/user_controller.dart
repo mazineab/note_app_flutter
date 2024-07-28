@@ -4,6 +4,8 @@ import 'package:note_app_flutter/data/models/user.dart';
 import 'package:note_app_flutter/data/repositories/user_repositorie.dart';
 import 'package:note_app_flutter/routes/routes_names.dart';
 
+import '../../../core/utils/localStorage/shared_pref_manager.dart';
+
 class UserController extends GetxController {
   UserRepositorie userRepositorie = UserRepositorie();
 
@@ -33,11 +35,17 @@ class UserController extends GetxController {
   }
 
   Future<void> logout()async{
-    final bool log=await userRepositorie.logout();
-    if(log){
-      userRepositorie.tokenManager.clearToken();
-      update();
-      Get.offAllNamed(RoutesNames.pageHome,arguments: 1);
+    try{
+      final bool log=await userRepositorie.logout();
+      if(log){
+        userRepositorie.tokenManager.clearToken();
+        bool clear = await Get.find<SharedPrefManager>().clear();
+        print(clear);
+        update();
+        Get.offAllNamed(RoutesNames.pageHome,arguments: const {"index":1,"first":true});
+      }
+    }catch(e){
+      throw "Error $e";
     }
   }
 
@@ -47,7 +55,7 @@ class UserController extends GetxController {
         content: Text(msg),
         cancel: TextButton(
             onPressed:ontap,
-            child: Text("Ok"))
+            child: const Text("Ok"))
     );
   }
 }

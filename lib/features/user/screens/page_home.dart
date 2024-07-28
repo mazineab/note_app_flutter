@@ -13,9 +13,9 @@ class PageHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // int val=Get.arguments;
-    Map<String,dynamic>data=Get.arguments;
-    int val=data['index'];
-    bool isFirst=data['first'];
+    Map<String,dynamic> data=Get.arguments;
+    int val=data['index']??1;
+    bool isFirst=data['first']??true;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Constants.colorGrey,

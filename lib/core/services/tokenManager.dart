@@ -1,7 +1,7 @@
 import 'package:note_app_flutter/core/utils/localStorage/shared_pref_manager.dart';
 
 class TokenManager {
-  static final String tokenKey="token";
+  static const String tokenKey="token";
   SharedPrefManager prefManager;
 
   TokenManager(this.prefManager);
