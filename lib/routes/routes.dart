@@ -11,9 +11,14 @@ import 'package:note_app_flutter/features/user/screens/register.dart';
 import 'package:note_app_flutter/routes/routes_names.dart';
 
 import '../core/services/auth_middleware.dart';
+import '../global/spleash.dart';
 
 class AppRoutes{
   static appRoutes()=>[
+    GetPage(
+      name: RoutesNames.splashScreen,
+      page: () => SplashScreen(),
+    ),
     GetPage(
         name:RoutesNames.homePage,
         page:()=>HomePage(),
@@ -23,7 +28,6 @@ class AppRoutes{
     GetPage(
         name: RoutesNames.loginPage,
         page:()=>LoginScreen(),
-
     ),
     GetPage(
         name: RoutesNames.registerPage,

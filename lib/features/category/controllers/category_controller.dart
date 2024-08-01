@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:note_app_flutter/core/utils/localStorage/shared_pref_manager.dart';
+
 import 'package:note_app_flutter/data/models/category.dart';
 import 'package:note_app_flutter/data/models/note.dart';
 import 'package:note_app_flutter/data/repositories/category_repositorie.dart';
@@ -168,7 +167,8 @@ class CategoryController extends GetxController{
     await getAllCategory();
     if(listCategory.isNotEmpty){
       clickedCategory(listCategory[0].id!);
-    }else{
+    }
+    else{
       messageEmptyCategory.value="Start to create category and note by click in button +";
     }
   }

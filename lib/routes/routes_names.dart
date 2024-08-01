@@ -1,4 +1,5 @@
 class RoutesNames{
+  static const String splashScreen="/splashScreen";
   static const String homePage="/home_page";
   static const String loginPage="/loginPage";
   static const String pageHome="/pageHome";

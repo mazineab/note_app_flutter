@@ -32,7 +32,7 @@ class CategoryRespositorie{
       return listCash;
     }
     else{
-      return await getCategory();
+      return await getCategory().timeout(Duration(seconds: 3));
     }
   }
   
