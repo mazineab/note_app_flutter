@@ -12,39 +12,51 @@ import 'package:note_app_flutter/data/repositories/note_repositorie.dart';
 class CategoryController extends GetxController{
   CategoryRespositorie categoryRespositorie  =CategoryRespositorie();
   NoteRespositorie noteRespositorie=NoteRespositorie();
-  List<Category> listCategory=<Category>[].obs;
-  List<Note> listNotes=<Note>[].obs;
+  var listCategory=<Category>[].obs;
+  var listNotes=<Note>[].obs;
 
   var isloading = true.obs;
   var message="".obs;
-
-
-
-
+  var selectedCategory = "".obs;
 
 
   Future<void> getAllCategory()async{
     final allCategory=await categoryRespositorie.cashCategoryList();
-    print(allCategory);
-    if(allCategory!=null){
+    if(allCategory.isNotEmpty){
       listCategory.assignAll(allCategory);
     }
+    else{
+      messageEmptyCategory.value="Start to create category and note by click in button +";
+    }
+    update();
   }
 
   Future<void> getCategoryOnline() async {
     final allCategory=await categoryRespositorie.getCategory();
-    print(allCategory);
-    if(allCategory!=null){
+    if(allCategory.isNotEmpty){
       listCategory.assignAll(allCategory);
     }
+    else{
+      messageEmptyCategory.value="Start to create category and note by click in button +";
+    }
+    print(listCategory);
     update();
+  }
+
+  getOnline(){
+    return listCategory;
   }
 
   Future<void> createCategory(String nameCategory)async{
     final bool add=await categoryRespositorie.addCategory(nameCategory);
     if(add){
-      getCategoryOnline();
-      alertCategory("info","Successfly add category",(){Get.back();});
+      // await getCategoryOnline();
+      alertCategory("info","Successfly add category",() async {
+        Get.back();
+        messageEmptyCategory.value="";
+        clickedCategory(listCategory.first.id!);
+        update();
+      });
     }
     else{
       alertCategory("error","error in adding category",(){Get.back();});
@@ -81,10 +93,13 @@ class CategoryController extends GetxController{
     final bool removeCat=await categoryRespositorie.deleteCategory(id);
     if(removeCat){
       alertCategory("info","Succesfly delete category",(){Get.back();});
-      await getCategoryOnline();
-      await getNoteOnline(id);
+      await getAll(id);
       if(listCategory.isEmpty){
         messageEmptyCategory.value="Start to create category and note by click in button +";
+      }
+      else{
+        clickedCategory(listCategory.first.id!);
+        selectedCategory.value=listCategory.first.nameCat!;
       }
     }
     else{
@@ -149,7 +164,6 @@ class CategoryController extends GetxController{
   void clickedCategory(int id){
     listNotes.clear();
     if(listCategory.isNotEmpty){
-      print("isNotEmpty");
       getAllNotes(id);
     }
     update();

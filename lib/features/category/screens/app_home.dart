@@ -7,6 +7,7 @@ import 'package:note_app_flutter/data/models/note.dart';
 import 'package:note_app_flutter/features/category/controllers/category_controller.dart';
 import 'package:note_app_flutter/global/widgets/custome_app_bar.dart';
 import 'package:note_app_flutter/routes/routes_names.dart';
+import '../../../data/models/category.dart';
 import '../../user/controllers/user_controller.dart';
 
 class AppHome extends StatelessWidget {
@@ -15,14 +16,15 @@ class AppHome extends StatelessWidget {
   UserController userController = Get.find<UserController>();
   CategoryController categoryController = Get.put(CategoryController());
 
-  String selectedCategory = "";
+
   TextEditingController contoldialog = TextEditingController();
 
   Future<void> refresh()async{
-    int id=categoryController.listCategory.firstWhere((element) => element.nameCat==selectedCategory).id!;
+    int id=categoryController.listCategory.firstWhere((element) => element.nameCat==categoryController.selectedCategory.value).id!;
     await categoryController.getAll(id);
     return Future.delayed(Duration(seconds:1));
   }
+  List<Category> categories=[];
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class AppHome extends StatelessWidget {
       appBar: CustomeAppBar(),
       body: GetBuilder<CategoryController>(
         builder: (controller) {
-      var categories = controller.listCategory;
+          categories.assignAll(controller.listCategory);
           List<Note> listFilter = controller.listNotes;
           if(controller.messageEmptyCategory.value.isNotEmpty){
             return Center(child: Text(controller.messageEmptyCategory.value));
@@ -49,11 +51,10 @@ class AppHome extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         itemCount: categories.length,
                         itemBuilder: (context, index) {
-                          if (selectedCategory.isEmpty && categories.isNotEmpty) {
-                            selectedCategory = categories[0].nameCat!;
+                          if (controller.selectedCategory.value.isEmpty && categories.isNotEmpty) {
+                            controller.selectedCategory.value = categories[0].nameCat!;
                           }
-                          bool isSelected =
-                              selectedCategory == categories[index].nameCat!;
+                          bool isSelected = controller.selectedCategory.value == categories[index].nameCat!;
                           return GestureDetector(
                             child: Container(
                               width: 80,
@@ -72,7 +73,7 @@ class AppHome extends StatelessWidget {
                               ),
                             ),
                             onTap: () {
-                              selectedCategory = categories[index].nameCat!;
+                              controller.selectedCategory.value = categories[index].nameCat!;
                               controller.clickedCategory(categories[index].id!);
                             },
                             onLongPress: () {
@@ -107,7 +108,6 @@ class AppHome extends StatelessWidget {
                                       categoryId: listFilter[index].category_id!,
                                       categoryController: controller,
                                       onTap:(){
-                                        // print("OKKKK");
                                         Get.toNamed(RoutesNames.noteDetail,
                                             arguments:{
                                               "name":listFilter[index].name!,
@@ -187,10 +187,15 @@ class AppHome extends StatelessWidget {
                 backgroundColor: Constants.colorBlue,
                 foregroundColor: Constants.colorwhite,
                 child: const Icon(Icons.add_chart_outlined),
-                onPressed: () {
-                  dialogCat(context, () {
+                onPressed: (){
+
+                  dialogCat(context, (){
                     categoryController.createCategory(contoldialog.text);
-                    Navigator.of(context).pop();
+                    categoryController.getCategoryOnline().then((_){
+                      categories.assignAll(categoryController.getOnline());
+                      categoryController.update();
+                    });
+                    Get.back();
                   });
                 },
               ),
@@ -213,7 +218,7 @@ class AppHome extends StatelessWidget {
               TextField(
                 controller: contoldialog,
                 decoration: InputDecoration(
-                    label: Text("name category"),
+                    label: const Text("name category"),
                     focusedBorder: OutlineInputBorder(
                         borderSide:
                             const BorderSide(color: Constants.colorBlue),
@@ -284,6 +289,7 @@ class AppHome extends StatelessWidget {
             TextButton(
                 onPressed: (){
                   controller.editNote(id,controller.edTitle.value.text,controller.edContent.value.text, categoryId);
+                  Get.back();
                 },
                 child: const Text("Save")
             ),
@@ -373,7 +379,7 @@ class AppHome extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10)),
                       child: Padding(
                         padding: const EdgeInsets.all(5),
-                        child: Text(selectedCategory,
+                        child: Text(categoryController.selectedCategory.value,
                             style: const TextStyle(color: Constants.colorBlue)),
                       ),
                     ),
