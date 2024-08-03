@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:note_app_flutter/core/services/api_service.dart';
 import 'package:note_app_flutter/core/utils/localStorage/shared_pref_manager.dart';
@@ -31,7 +32,8 @@ class NoteRespositorie extends GetxController {
       if (cashData.isNotEmpty) {
         List<dynamic> cashNote = jsonDecode(cashData);
         listCashe.addAll(cashNote.map((e) => Note.fromJson(e)).toList());
-        print(sharedPrefManager.pref.get("token"));
+        print(dotenv.env['IPv4']);
+        // print(sharedPrefManager.pref.get("token"));
         return listCashe;
       } else {
         return await getNotesOf(id).timeout(
