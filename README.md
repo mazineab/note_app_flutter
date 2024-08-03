@@ -16,3 +16,5 @@
 * **Mobile:**
   <img src="assets/Screenshots/mobile/hmMbl.png" alt="Home Mobile" width="200"/>
   <img src="assets/Screenshots/mobile/regMbl.png" alt="Register Mobile" width="200"/>
+* **Demo:**
+  [Watch the demo video](https://github.com/user-attachments/assets/42cd7f7b-1e09-4a25-ae10-3f0ac1bffb12)
