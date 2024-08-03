@@ -9,10 +9,10 @@
 * View, edit, or delete individual notes.
 
 
-## :eyes: App screenshots:
-* web:
-![homeWeb](assets/Screenshots/web/hmWeb.png)
-![loginWeb](assets/Screenshots/web/lgnWeb.png)
-* mobile:
-![homeMobile](assets/Screenshots/mobile/hmMbl.png)
-![regMobile](assets/Screenshots/mobile/regMbl.png)
+## :eyes: App Screenshots:
+* **Web:**
+  <img src="assets/Screenshots/web/hmWeb.png" alt="Home Web" width="200"/>
+  <img src="assets/Screenshots/web/lgnWeb.png" alt="Login Web" width="200"/>
+* **Mobile:**
+  <img src="assets/Screenshots/mobile/hmMbl.png" alt="Home Mobile" width="200"/>
+  <img src="assets/Screenshots/mobile/regMbl.png" alt="Register Mobile" width="200"/>
