@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:note_app_flutter/core/utils/constant.dart';
-import 'package:note_app_flutter/global/widgets/custome_app_bar.dart';
+import 'package:note_app_flutter/global/widgets/custom_app_bar.dart';
 
 class NoteDetails extends StatelessWidget {
   const NoteDetails({super.key});
@@ -10,7 +10,7 @@ class NoteDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     Map<String,dynamic> data=Get.arguments;
     return Scaffold(
-      appBar: CustomeAppBar(),
+      appBar: CustomAppBar(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:note_app_flutter/core/utils/messages.dart';
 import 'package:note_app_flutter/routes/routes_names.dart';
 import '../core/utils/constant.dart';
 
@@ -38,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 30),
               child: const Text(
-                "Memo",
+                Messages.Memo,
                 style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:note_app_flutter/core/utils/messages.dart';
 import 'package:note_app_flutter/data/models/user.dart';
 import 'package:note_app_flutter/features/user/controllers/user_controller.dart';
 
@@ -22,7 +23,7 @@ class Register extends StatelessWidget {
                 const SizedBox(height: 20),
                 CustomTextField(
                   cont: controller.edNm,
-                  text: "username",
+                  text: Messages.username,
                   colorFocus: controller.focusNm,
                   iconData: Icons.person,
                   focusNode: controller.focusNodeName,
@@ -30,7 +31,7 @@ class Register extends StatelessWidget {
                 const SizedBox(height: 10),
                 CustomTextField(
                   cont: controller.edEmail,
-                  text: "email",
+                  text: Messages.email,
                   colorFocus: controller.focusEml,
                   iconData: Icons.email,
                   focusNode: controller.focusNodeEml,
@@ -38,7 +39,7 @@ class Register extends StatelessWidget {
                 const SizedBox(height: 10),
                 CustomTextField(
                   cont: controller.edPh,
-                  text: "phone number",
+                  text: Messages.phNbr,
                   iconData: Icons.phone,
                   colorFocus: controller.focusPhone,
                   focusNode: controller.focusNodePhone,
@@ -46,7 +47,7 @@ class Register extends StatelessWidget {
                 const SizedBox(height: 10),
                 CustomTextFieldPassword(
                   cont: controller.edPassword,
-                  text: "password",
+                  text: Messages.password,
                   colorFocus: controller.focusPassword,
                   iconData: Icons.lock,
                   obscure: controller.obscure,
@@ -59,7 +60,7 @@ class Register extends StatelessWidget {
                 Container(
                     margin: EdgeInsets.symmetric(horizontal: 20),
                     child: CustomButton(
-                        text: "Singup",
+                        text: Messages.signup,
                         colorBg: Constants.colorBlue,
                         colorText: Constants.colorwhite,
                         onPressed: () {

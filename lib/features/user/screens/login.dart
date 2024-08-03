@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:note_app_flutter/core/utils/messages.dart';
 import 'package:note_app_flutter/features/user/controllers/user_controller.dart';
 
 import '../../../core/utils/constant.dart';
@@ -22,14 +23,14 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 20),
               CustomTextField(
                 cont: controller.edEmail,
-                text: "email",
+                text: Messages.email,
                 colorFocus:controller.focusEml,
                 iconData: Icons.email,
                 focusNode: controller.focusNodeEml,
               ),const SizedBox(height: 30),
               CustomTextFieldPassword(
                 cont: controller.edPassword,
-                text: "password",
+                text: Messages.password,
                 colorFocus:controller.focusPassword,
                 iconData: Icons.lock,
                 obscure: controller.obscure,
@@ -37,7 +38,7 @@ class LoginScreen extends StatelessWidget {
               ),const SizedBox(height: 20),
               Container(
                   margin:const EdgeInsets.symmetric(horizontal: 20),
-                  child: CustomButton(text:"Singin",colorBg: Constants.colorBlue,
+                  child: CustomButton(text:Messages.signin,colorBg: Constants.colorBlue,
                     colorText: Constants.colorwhite,
                     onPressed:(){
                       userController.login(

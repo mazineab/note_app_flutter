@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:get/get.dart';
 import 'package:note_app_flutter/core/utils/constant.dart';
+import 'package:note_app_flutter/core/utils/messages.dart';
 import 'package:note_app_flutter/data/models/note.dart';
 import 'package:note_app_flutter/features/category/controllers/category_controller.dart';
-import 'package:note_app_flutter/global/widgets/custome_app_bar.dart';
+import 'package:note_app_flutter/global/widgets/custom_app_bar.dart';
 import 'package:note_app_flutter/routes/routes_names.dart';
 import '../../../data/models/category.dart';
 import '../../user/controllers/user_controller.dart';
@@ -29,7 +30,7 @@ class AppHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomeAppBar(),
+      appBar: CustomAppBar(),
       body: GetBuilder<CategoryController>(
         builder: (controller) {
           categories.assignAll(controller.listCategory);
@@ -78,7 +79,7 @@ class AppHome extends StatelessWidget {
                             },
                             onLongPress: () {
                               dialogAsk(context,
-                                  "Do you want to remove this category?", () {
+                                  Messages.wntDltCat, () {
                                     categoryController.removeCategory(categories[index].id!);
                                     Get.back();
                                   });
@@ -153,7 +154,7 @@ class AppHome extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10)),
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Text("add Note",
+                    child: Text(Messages.createNt,
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold)),
                   )),
@@ -177,7 +178,7 @@ class AppHome extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10)),
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Text("add category",
+                    child: Text(Messages.createCat,
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold)),
                   )),
@@ -195,6 +196,7 @@ class AppHome extends StatelessWidget {
                       categories.assignAll(categoryController.getOnline());
                       categoryController.update();
                     });
+                    contoldialog.text="";
                     Get.back();
                   });
                 },
@@ -211,14 +213,14 @@ class AppHome extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Create Category'),
+          title: const Text(Messages.createCat),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: contoldialog,
                 decoration: InputDecoration(
-                    label: const Text("name category"),
+                    label: const Text(Messages.catName),
                     focusedBorder: OutlineInputBorder(
                         borderSide:
                             const BorderSide(color: Constants.colorBlue),
@@ -233,11 +235,11 @@ class AppHome extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Cancel'),
+              child: const Text(Messages.cancel),
             ),
             TextButton(
               onPressed: onTap,
-              child: Text('Add'),
+              child: Text(Messages.add),
             ),
           ],
         );
@@ -250,16 +252,16 @@ class AppHome extends StatelessWidget {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text("Request"),
+            title: Text(Messages.request),
             content: Text("$content"),
             actions: [
               TextButton(
-                child: Text("No"),
+                child: Text(Messages.no),
                 onPressed: () {
                   Get.back();
                 },
               ),
-              TextButton(onPressed: onTap, child: Text("Yes"))
+              TextButton(onPressed: onTap, child: Text(Messages.yes))
             ],
           );
         });
@@ -270,7 +272,7 @@ class AppHome extends StatelessWidget {
     controller.edContent.value.text=content;
     return showDialog(context: context, builder: (context)=>
         AlertDialog(
-          title: const Text("Edit Note"),
+          title: const Text(Messages.edtNt),
           content: SingleChildScrollView(
             child: Column(
               children: [
@@ -291,13 +293,13 @@ class AppHome extends StatelessWidget {
                   controller.editNote(id,controller.edTitle.value.text,controller.edContent.value.text, categoryId);
                   Get.back();
                 },
-                child: const Text("Save")
+                child: const Text(Messages.svChng)
             ),
             TextButton(
                 onPressed: (){
                   Get.back();
                 },
-                child: const Text("Cancel")
+                child: const Text(Messages.cancel)
             )
           ],
         )
@@ -314,25 +316,25 @@ class AppHome extends StatelessWidget {
         onTap: onTap,
         trailing: PopupMenuButton(
           iconColor: Constants.colorBlue,
-          color: Constants.colorBlue.withOpacity(0.5),
+          color: Constants.colorwhite,
           itemBuilder: (BuildContext context) {
             return [
               const PopupMenuItem(
-                value: "Edit",
-                child: Text("Edit", style: TextStyle(color: Colors.white)),
+                value: Messages.edit,
+                child: Text(Messages.edit, style: TextStyle(color: Constants.colorBlue)),
               ),
               const PopupMenuItem(
-                value: "Remove",
-                child: Text("Remove", style: TextStyle(color: Colors.white)),
+                value: Messages.remove,
+                child: Text(Messages.remove, style: TextStyle(color:Constants.colorBlue)),
               )
             ];
           },
           onSelected: (value) {
-            if (value == "Edit") {
+            if (value == Messages.edit) {
               dialogEdit(Get.context, title, content,noteId,categoryId,categoryController);
             }
-            if (value == "Remove") {
-              dialogAsk(Get.context,"do you want to remove this note",(){
+            if (value == Messages.remove) {
+              dialogAsk(Get.context,Messages.wntDltNt,(){
                 categoryController.deleteNote(noteId, categoryId);
                 Get.back();
               });

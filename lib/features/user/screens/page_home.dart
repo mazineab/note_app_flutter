@@ -2,9 +2,11 @@ import 'package:custom_sliding_segmented_control/custom_sliding_segmented_contro
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:note_app_flutter/core/utils/constant.dart';
+import 'package:note_app_flutter/core/utils/messages.dart';
 import 'package:note_app_flutter/features/user/controllers/text_field_controller.dart';
 import 'package:note_app_flutter/features/user/screens/login.dart';
 import 'package:note_app_flutter/features/user/screens/register.dart';
+import 'package:note_app_flutter/global/widgets/custom_app_bar.dart';
 
 class PageHome extends StatelessWidget {
   const PageHome({super.key});
@@ -17,13 +19,7 @@ class PageHome extends StatelessWidget {
     int val=data['index']??1;
     bool isFirst=data['first']??true;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Constants.colorGrey,
-        title: const Text(
-          "Memo",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
+      appBar: CustomAppBar(),
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.only(top: 10),
@@ -36,17 +32,17 @@ class PageHome extends StatelessWidget {
               return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text("Welcome Back",
+                    const Text(Messages.wlc,
                         style: TextStyle(
                             fontSize: 35, fontWeight: FontWeight.bold)),
                     const Text(
-                        "welcome to memo app,Please enter to you account or create it",
+                        Messages.wlcMsg,
                         style: TextStyle(color: Constants.colorGreyText)),
                     const SizedBox(height: 20),
                     CustomSlidingSegmentedControl(
                       fixedWidth: 150,
                       initialValue:val!=-1?val:1,
-                      children: const {1: Text("Login"), 2: Text("register")},
+                      children: const {1: Text(Messages.login), 2: Text(Messages.register)},
                       onValueChanged: (value) {
                         val=-1;
                         controller.chnagePage(value,false);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:note_app_flutter/core/utils/constant.dart';
+import 'package:note_app_flutter/core/utils/messages.dart';
 import 'package:note_app_flutter/features/home/controllers/home_controller.dart';
 
 import '../../../global/widgets/custom_button.dart';
@@ -24,13 +25,13 @@ class HomePage extends StatelessWidget {
             const SizedBox(height:20),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 30),
-              child: const Text("Save your notes online and locally without worrying about losing them.",
+              child: const Text(Messages.desc,
                 style: TextStyle(fontSize: 30),textAlign:TextAlign.center,),
             ),const SizedBox(height: 60),
             GetBuilder<HomeController>(
                 builder:(controller){
                   return CustomButton(
-                      text: "register",colorText: Constants.colorwhite,colorBg: Constants.colorBlue,
+                      text: Messages.register,colorText: Constants.colorwhite,colorBg: Constants.colorBlue,
                     onPressed:(){
                       controller.toRegister();
                     },
@@ -40,7 +41,7 @@ class HomePage extends StatelessWidget {
             const SizedBox(height:20),
             GetBuilder<HomeController>(
                 builder:(controller){
-                  return CustomButton(text: "Login",colorText: Constants.colorBlue,colorBg: Constants.colorwhite,
+                  return CustomButton(text: Messages.login,colorText: Constants.colorBlue,colorBg: Constants.colorwhite,
                     onPressed:(){
                       controller.toLogin();
                     },

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:note_app_flutter/core/utils/messages.dart';
 
 import 'package:note_app_flutter/data/models/category.dart';
 import 'package:note_app_flutter/data/models/note.dart';
@@ -10,8 +11,8 @@ import 'package:note_app_flutter/data/repositories/note_repositorie.dart';
 
 
 class CategoryController extends GetxController{
-  CategoryRespositorie categoryRespositorie  =CategoryRespositorie();
-  NoteRespositorie noteRespositorie=NoteRespositorie();
+  CategoryRespositorie categoryRespositorie  =Get.find<CategoryRespositorie>();
+  NoteRespositorie noteRespositorie=Get.find<NoteRespositorie>();
   var listCategory=<Category>[].obs;
   var listNotes=<Note>[].obs;
 
@@ -20,13 +21,17 @@ class CategoryController extends GetxController{
   var selectedCategory = "".obs;
 
 
+
+
+
+
   Future<void> getAllCategory()async{
     final allCategory=await categoryRespositorie.cashCategoryList();
     if(allCategory.isNotEmpty){
       listCategory.assignAll(allCategory);
     }
     else{
-      messageEmptyCategory.value="Start to create category and note by click in button +";
+      messageEmptyCategory.value=Messages.startMsg;
     }
     update();
   }
@@ -37,7 +42,7 @@ class CategoryController extends GetxController{
       listCategory.assignAll(allCategory);
     }
     else{
-      messageEmptyCategory.value="Start to create category and note by click in button +";
+      messageEmptyCategory.value=Messages.startMsg;
     }
     print(listCategory);
     update();
@@ -50,8 +55,7 @@ class CategoryController extends GetxController{
   Future<void> createCategory(String nameCategory)async{
     final bool add=await categoryRespositorie.addCategory(nameCategory);
     if(add){
-      // await getCategoryOnline();
-      alertCategory("info","Successfly add category",() async {
+      alertCategory(Messages.success,Messages.successAddCat,() async {
         Get.back();
         messageEmptyCategory.value="";
         clickedCategory(listCategory.first.id!);
@@ -59,7 +63,7 @@ class CategoryController extends GetxController{
       });
     }
     else{
-      alertCategory("error","error in adding category",(){Get.back();});
+      alertCategory(Messages.error,Messages.errorAddCat,(){Get.back();});
     }
     update();
   }
@@ -79,10 +83,10 @@ class CategoryController extends GetxController{
           listNotes.assignAll(allNotes);
           message.value = "";
         } else {
-          message.value = "This category is empty. Create one note.";
+          message.value = Messages.emptyCat;
         }
       } catch (e) {
-        message.value = "An error occurred while fetching notes.";
+        message.value = Messages.failFetchNote;
       } finally {
         isloading.value = false;
         update();
@@ -92,10 +96,10 @@ class CategoryController extends GetxController{
   Future<void> removeCategory(int id)async{
     final bool removeCat=await categoryRespositorie.deleteCategory(id);
     if(removeCat){
-      alertCategory("info","Succesfly delete category",(){Get.back();});
+      alertCategory(Messages.success,Messages.successDltNote,(){Get.back();});
       await getAll(id);
       if(listCategory.isEmpty){
-        messageEmptyCategory.value="Start to create category and note by click in button +";
+        messageEmptyCategory.value=Messages.startMsg;
       }
       else{
         clickedCategory(listCategory.first.id!);
@@ -103,7 +107,7 @@ class CategoryController extends GetxController{
       }
     }
     else{
-      alertCategory("error","error delete category",(){Get.back();});
+      alertCategory(Messages.error,Messages.failDltCat,(){Get.back();});
     }
   }
 
@@ -115,10 +119,10 @@ class CategoryController extends GetxController{
         listNotes.assignAll(allNotes);
       }
       else{
-        message.value="this category is empty create one note";
+        message.value=Messages.emptyCat;
       }
     }catch(e){
-      message.value="Error ocurent charging notes of this category";
+      message.value=Messages.failFetchNote;
     }
     isloading.value=false;
     update();
@@ -127,14 +131,14 @@ class CategoryController extends GetxController{
   Future<void> deleteNote(int id,int category_id)async{
     final delete=await noteRespositorie.deleteNote(id);
     if(delete){
-      alertCategory("info","Succesfly delete note",(){Get.back();});
+      alertCategory(Messages.success,Messages.successDltNote,(){Get.back();});
       getNoteOnline(category_id);
       if(listCategory.isEmpty){
-        messageEmptyCategory.value="Start to create category and note by click in button +";
+        messageEmptyCategory.value=Messages.startMsg;
       }
     }
     else{
-      alertCategory("error","error delete note",(){Get.back();});
+      alertCategory(Messages.error,Messages.failDltNote,(){Get.back();});
     }
     update();
   }
@@ -150,11 +154,11 @@ class CategoryController extends GetxController{
         }
     );
     if(edit){
-      alertCategory("info","Succesfly editing note",(){Get.back();});
+      alertCategory(Messages.success,Messages.sucEdtNote,(){Get.back();});
       await getNoteOnline(category_id);
     }
     else{
-      alertCategory("error","error editing note",(){Get.back();});
+      alertCategory(Messages.error,Messages.failEdtNote,(){Get.back();});
     }
   }
 
@@ -183,7 +187,7 @@ class CategoryController extends GetxController{
       clickedCategory(listCategory[0].id!);
     }
     else{
-      messageEmptyCategory.value="Start to create category and note by click in button +";
+      messageEmptyCategory.value=Messages.startMsg;
     }
   }
 }
