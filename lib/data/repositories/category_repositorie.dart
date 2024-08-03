@@ -7,7 +7,8 @@ import 'package:note_app_flutter/data/models/category.dart';
 
 class CategoryRespositorie{
   SharedPrefManager sharedPrefManager=Get.find<SharedPrefManager>();
-  ApiServices apiServices=ApiServices();
+  // ApiServices apiServices=ApiServices();
+  ApiServices apiServices = Get.find<ApiServices>();
 
 
   Future<List<Category>> getCategory()async{

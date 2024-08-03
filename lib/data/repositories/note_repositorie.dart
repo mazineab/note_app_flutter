@@ -7,7 +7,7 @@ import 'package:note_app_flutter/data/models/note.dart';
 
 class NoteRespositorie extends GetxController {
   SharedPrefManager sharedPrefManager = Get.find<SharedPrefManager>();
-  ApiServices apiServices = ApiServices();
+  ApiServices apiServices = Get.find<ApiServices>();
 
   Future<List<Note>> getNotesOf(int id) async {
     List<Note> listNotes = [];

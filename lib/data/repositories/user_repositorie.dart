@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:note_app_flutter/core/services/api_service.dart';
 import 'package:note_app_flutter/core/services/tokenManager.dart';
-import 'package:note_app_flutter/core/utils/localStorage/shared_pref_manager.dart';
 import 'package:note_app_flutter/data/models/user.dart';
 
 class UserRepositorie{
-  final apiService=ApiServices();
-  TokenManager tokenManager = Get.find();
 
+  TokenManager tokenManager = Get.find();
+  // final apiService=ApiServices();
+  ApiServices apiService = Get.find<ApiServices>();
 
   Future<bool> login(String email,String password)async{
     final response=await apiService.httpPost("loginUser",
