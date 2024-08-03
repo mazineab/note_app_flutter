@@ -1,16 +1,18 @@
-# note_app_flutter
+# Key Features:
+* Create custom categories to organize your notes based on subjects, projects, or themes.
+* User authentication.
+* Save authentication state.
+* Loading indicators for a smooth user experience.
+* Attach notes to specific categories for easy categorization.
+* User-friendly interface for seamless navigation.
+* Quick access buttons for adding new categories and notes.
+* View, edit, or delete individual notes.
 
-A new Flutter project.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## :eyes: App screenshots:
+* web:
+![homeWeb](assets/Screenshots/web/hmWeb.png)
+![loginWeb](assets/Screenshots/web/lgnWeb.png)
+* mobile:
+![homeMobile](assets/Screenshots/mobile/hmMbl.png)
+![regMobile](assets/Screenshots/mobile/regMbl.png)

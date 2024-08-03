@@ -14,7 +14,6 @@ class PageHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // int val=Get.arguments;
     Map<String,dynamic> data=Get.arguments;
     int val=data['index']??1;
     bool isFirst=data['first']??true;
@@ -37,7 +36,7 @@ class PageHome extends StatelessWidget {
                             fontSize: 35, fontWeight: FontWeight.bold)),
                     const Text(
                         Messages.wlcMsg,
-                        style: TextStyle(color: Constants.colorGreyText)),
+                        style: TextStyle(color: Constants.colorGreyText),textAlign:TextAlign.center,),
                     const SizedBox(height: 20),
                     CustomSlidingSegmentedControl(
                       fixedWidth: 150,
